@@ -1,6 +1,7 @@
 var app = require('http').createServer(handler);
 var fs = require('fs');
 var io = require('socket.io')(app);
+var hereGuids = fs.readdirSync(__dirname + '/../guids/here'); // This user's guids
 
 app.listen(8080);
 
@@ -20,6 +21,7 @@ function handler (req, res) {
             res.end();
         });
     }
+
     if (req.url.indexOf('client.js') != -1) {
         fs.readFile(__dirname + '/client.js', function (err, data) {
             if (err) console.log(err);
@@ -28,6 +30,10 @@ function handler (req, res) {
             res.end();
         });
     }
+
+
+    // Respond to client wanting to connect to an existing hereGuid
+    
 
     fs.readFile('index.html',    // load html file
     function (err, data) {
@@ -39,6 +45,8 @@ function handler (req, res) {
         res.end(data);
     });
 }
+
+
 
 io.on('connection', function(socket){
     console.log('a user connected');

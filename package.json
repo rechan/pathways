@@ -1,0 +1,9 @@
+{
+  "name": "pathways",
+  "description": "networking app and protocol",
+  "version": "0.0.1",
+  "dependencies": {
+    "credential": "^0.2.5",
+    "socket.io": "^1.3.5"
+  }
+}
