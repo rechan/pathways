@@ -10,16 +10,34 @@ function handler (req, res) {
         res.end();
         console.log('favicon requested');
         return;
-      }
-      fs.readFile('index.html',    // load html file
-      function (err, data) {
-          if (err) {
-              res.writeHead(500);
-              return res.end('Error loading index.html');
-          }
-          res.writeHead(200);
-          res.end(data);
-      });
+    }
+
+    if (req.url.indexOf('socket.io-1.3.4.js') != -1) {
+        fs.readFile(__dirname + '/../lib/socket.io-1.3.4.js', function (err, data) {
+            if (err) console.log(err);
+            res.writeHead(200, {'Content-Type': 'text/javascript'});
+            res.write(data);
+            res.end();
+        });
+    }
+    if (req.url.indexOf('client.js') != -1) {
+        fs.readFile(__dirname + '/client.js', function (err, data) {
+            if (err) console.log(err);
+            res.writeHead(200, {'Content-Type': 'text/javascript'});
+            res.write(data);
+            res.end();
+        });
+    }
+
+    fs.readFile('index.html',    // load html file
+    function (err, data) {
+        if (err) {
+            res.writeHead(500);
+            return res.end('Error loading index.html');
+        }
+        res.writeHead(200);
+        res.end(data);
+    });
 }
 
 io.on('connection', function(socket){
