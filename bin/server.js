@@ -1,11 +1,6 @@
-process.env.NODE_PATH = __dirname + '/lib';
- 
-// private node.js core method, could change in the future; beware.
-require('module').Module._initPaths();
-
 var app = require('http').createServer(handler);
 var fs = require('fs');
-var io = require('socket.io').listen(app);
+var io = require('socket.io')(app);
 
 app.listen(8080);
 
@@ -16,7 +11,7 @@ function handler (req, res) {
         console.log('favicon requested');
         return;
       }
-      fs.readFile('HtmlLedDemo.html',    // load html file
+      fs.readFile('index.html',    // load html file
       function (err, data) {
           if (err) {
               res.writeHead(500);
@@ -26,3 +21,7 @@ function handler (req, res) {
           res.end(data);
       });
 }
+
+io.on('connection', function(socket){
+    console.log('a user connected');
+});
