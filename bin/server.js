@@ -2,10 +2,32 @@ var app = require('http').createServer(handler);
 var fs = require('fs');
 var io = require('socket.io')(app);
 var hereGuids = fs.readdirSync(__dirname + '/../guids/here'); // This user's guids
+var mongoose = require('mongoose');
+var cp = require('child_process');
+
+
+// Mongoose init.
+mongoose.connect('mongodb://localhost:27017/');
+var User = mongoose.model('User', {guid: String, password: String});
+User.findOne({guid:'abc'});
 
 app.listen(8080);
 
 function handler (req, res) {
+
+    if (req.method == 'POST' && req.url == "/new-guid"){
+      // Handles a guid authentication post
+      var body = '';
+      req.on('data', function (data) {
+          body += data;
+      });
+      req.on('end', function () {
+          res.writeHead(200, {'Content-Type': 'text/html'});
+          res.end('post received');
+          console.log(body);
+      });
+    }
+
     if (req.url == "/favicon.ico"){   // handle requests for favico.ico
         res.writeHead(200, {'Content-Type': 'image/x-icon'} );
         res.end();
@@ -45,8 +67,6 @@ function handler (req, res) {
         res.end(data);
     });
 }
-
-
 
 io.on('connection', function(socket){
     console.log('a user connected');
