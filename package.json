@@ -2,12 +2,20 @@
   "name": "pathways",
   "description": "networking app and protocol",
   "version": "0.0.1",
+  "scripts": {
+    "test": "make test"
+  },
   "dependencies": {
+    "chai": "^2.1.1",
     "credential": "^0.2.5",
     "level": "^0.18.0",
+    "mocha": "^2.2.1",
+    "mockery": "^1.4.0",
     "mongoose": "^3.8.24",
     "passport": "^0.2.1",
     "passport-local": "^1.0.0",
+    "request": "^2.53.0",
+    "sinon": "^1.13.0",
     "socket.io": "^1.3.5"
   }
 }

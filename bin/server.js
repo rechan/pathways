@@ -1,4 +1,4 @@
-var app = require('http').createServer(handler);
+var app = module.exports = require('http').createServer(handler);
 var fs = require('fs');
 var io = require('socket.io')(app);
 var hereGuids = fs.readdirSync(__dirname + '/../guids/here'); // This user's guids
@@ -14,6 +14,7 @@ function createGuid () {
 }
 
 function storeGuid (guid, nick) {
+    // Store a unique nick with a supplied GUID as the value.
     guidDb.get(nick, function (err, value) {
         if (err) {
             guidDb.put(nick, guid, function (err) {
@@ -93,14 +94,15 @@ function handler (req, res) {
     
 
     fs.readFile('index.html',    // load html file
-    function (err, data) {
-        if (err) {
-            res.writeHead(500);
-            return res.end('Error loading index.html');
+        function (err, data) {
+            if (err) {
+                res.writeHead(500);
+                return res.end('Error loading index.html');
+            }
+           res.writeHead(200);
+           res.end(data);
         }
-        res.writeHead(200);
-        res.end(data);
-    });
+    );
 }
 
 io.on('connection', function(socket){
