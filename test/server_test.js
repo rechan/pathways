@@ -1,4 +1,5 @@
 var expect = require("chai").expect
+var mocha = require('mocha');
 var sinon = require("sinon");
 var mockery = require("mockery");
 var request = require("request");
